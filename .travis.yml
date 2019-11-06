@@ -1,4 +1,6 @@
-env: TAG_NAME=v1.0
+env:
+ global:
+ - TAG_NAME=v1.0
 language: python            # this works for Linux but is an error on macOS or Windows
 jobs:
   include:
@@ -43,7 +45,7 @@ script:
   - pyinstaller -F entry.py
 after_success:
   - mkdir ./dist/TESTDIR
-  - cp ./dist/entry.exe ./dist/TESTDIR
+  - cp ./dist/entry* ./dist/TESTDIR
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
