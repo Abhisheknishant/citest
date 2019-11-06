@@ -43,7 +43,7 @@ script:
   - pyinstaller -F entry.py
 after_success:
   - mkdir ./dist/TESTDIR
-  - cp ./entry.exe ./dist/TESTDIR
+  - cp ./dist/entry.exe ./dist/TESTDIR
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
