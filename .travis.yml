@@ -41,7 +41,7 @@ install:
 script:
   - python3 entry.py || python entry.py
   - pyinstaller -F entry.py
-after_script:
+after_success:
   - mkdir ./dist/TESTDIR
   - cp ./entry.exe ./dist/TESTDIR
 deploy:
