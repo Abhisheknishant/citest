@@ -1,6 +1,6 @@
 env:
  global:
- - TAG_NAME=v1.2
+ - TAG_NAME=v1.3
 language: python            # this works for Linux but is an error on macOS or Windows
 jobs:
   include:
@@ -57,5 +57,7 @@ deploy:
   file: $RELEASE_FILENAME
   skip_cleanup: true
   overwrite: true
+  on:
+    tags: true
   # tag_name: $TAG_NAME
   
