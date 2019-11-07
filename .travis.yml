@@ -1,6 +1,6 @@
 env:
   global:
-    - TAG_NAME=v0.0.2
+    - TAG_NAME=v0.0.3
 if: tag IS blank
 sudo: required
 jobs:
@@ -10,7 +10,8 @@ jobs:
       language: python
       python: 3.7
       before_deploy:
-        - tar czvf $RELEASE_FILENAME ./release/BiliDrive
+        - cd release
+        - tar czvf $RELEASE_FILENAME BiliDrive
 
     - name: "Python 3.7 on Linux (ARM)"
       arch: arm64
@@ -18,7 +19,8 @@ jobs:
       language: python
       python: 3.7
       before_deploy:
-        - tar czvf $RELEASE_FILENAME ./release/BiliDrive
+        - cd release
+        - tar czvf $RELEASE_FILENAME BiliDrive
 
     - name: "Python 3.7 on macOS"
       env: RELEASE_FILENAME=bilidrive-$TAG_NAME-macos-amd64.tar.gz
@@ -26,7 +28,8 @@ jobs:
       os: osx
       osx_image: xcode11.2
       before_deploy:
-        - tar czvf $RELEASE_FILENAME ./release/BiliDrive
+        - cd release
+        - tar czvf $RELEASE_FILENAME BiliDrive
 
     - name: "Python 3.7 on Windows"
       env:
@@ -34,12 +37,13 @@ jobs:
         - RELEASE_FILENAME=bilidrive-$TAG_NAME-windows-amd64.zip
       language: shell
       os: windows
-      before_deploy:
-        - 7z a -tzip $RELEASE_FILENAME ./release/BiliDrive
       before_install:
         - choco install python --version 3.7
         - choco install 7zip
         - python -m pip install --upgrade pip
+      before_deploy:
+        - cd release
+        - 7z a -tzip $RELEASE_FILENAME BiliDrive
 install:
   - pip3 install --upgrade pip
   - pip3 install -r requirements.txt
@@ -54,6 +58,7 @@ deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
   file: $RELEASE_FILENAME
-  skip_cleanup: true
+  draft: true
   overwrite: true
+  skip_cleanup: true
   tag_name: $TAG_NAME
