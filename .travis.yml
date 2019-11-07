@@ -1,20 +1,68 @@
+env:
+  global:
+    - TRAVIS_TAG=v0.0.15
+if: tag IS blank
 jobs:
   include:
-    - name: "Python 3.7 on Linux (ARM64)"
-      arch: arm64
-      env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-arm64.tar.gz
+    - name: "Python 3.7 on Linux (AMD64)"
+      os: linux
+      dist: bionic
+      arch: amd64
       language: python
       python: 3.7
+      env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-amd64.tar.gz
+      before_deploy:
+        - cd release
+        - tar czvf $RELEASE_FILENAME BiliDrive
+
+    - name: "Python 3.7 on Linux (ARM64)"
+      os: linux
+      dist: bionic
+      arch: arm64
+      language: python
+      python: 3.7
+      env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-arm64.tar.gz
+      before_deploy:
+        - cd release
+        - tar czvf $RELEASE_FILENAME BiliDrive
+
+    - name: "Python 3.7 on macOS (AMD64)"
+      os: osx
+      osx_image: xcode11.2
+      arch: amd64
+      language: shell
+      env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-macos-amd64.tar.gz
+      before_deploy:
+        - cd release
+        - tar czvf $RELEASE_FILENAME BiliDrive
+
+    - name: "Python 3.7 on Windows (AMD64)"
+      os: windows
+      arch: amd64
+      language: shell
+      env:
+        - PATH=/c/Python37:/c/Python37/Scripts:$PATH
+        - RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-windows-amd64.zip
+      before_install:
+        - choco install python --version 3.7
+        - python -m pip install --upgrade pip
+        - choco install 7zip
+      before_deploy:
+        - cd release
+        - 7z a -tzip $RELEASE_FILENAME BiliDrive
 install:
   - pip3 install --upgrade pip
   - pip3 install -r requirements.txt
   - pip3 install pyinstaller
 script:
   - pyinstaller -F -n BiliDrive drive.py
+after_success:
+  - mkdir -p release/BiliDrive
+  - cp dist/* release/BiliDrive/
+  - cp README.md release/BiliDrive/
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
-  file: dist/BiliDrive
+  file: $RELEASE_FILENAME
   overwrite: true
   skip_cleanup: true
-  tag_name: v0.1.0
