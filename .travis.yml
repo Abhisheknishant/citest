@@ -1,11 +1,12 @@
 env:
   global:
-    - TRAVIS_TAG=v0.0.6
+    - TRAVIS_TAG=v0.0.7
 if: tag IS blank
 #sudo: required
 jobs:
   include:
     - name: "Python 3.7 on Linux (AMD64)"
+    dist: xenial
       env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-amd64.tar.gz
       language: python
       python: 3.7
@@ -21,6 +22,8 @@ jobs:
       before_deploy:
         - cd release
         - tar czvf $RELEASE_FILENAME BiliDrive
+      before_install:
+        - rvm install 2.3.0
 
     - name: "Python 3.7 on macOS (AMD64)"
       env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-macos-amd64.tar.gz
@@ -51,9 +54,9 @@ install:
 script:
   - pyinstaller -F -n BiliDrive drive.py
 after_success:
-  - mkdir -p ./release/BiliDrive
-  - cp ./dist/* ./release/BiliDrive/
-  - cp ./README.md ./release/BiliDrive/
+  - mkdir -p release/BiliDrive
+  - cp dist/* release/BiliDrive/
+  - cp README.md release/BiliDrive/
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
