@@ -1,8 +1,9 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v0.0.23
+        - TRAVIS_TAG=v0.0.24
 jobs:
+    fast_finish: true
     include:
         -
             name: 'Python 3.7.5 on Linux (AMD64)'
@@ -49,7 +50,7 @@ script:
     - 'cp dist/* release/BiliDrive/'
     - 'cp README.md release/BiliDrive/'
     - 'cd release'
-    - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then 7z a -tzip $RELEASE_FILENAME BiliDrive; elif [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r $RELEASE_FILENAME BiliDrive; else tar czvf $RELEASE_FILENAME BiliDrive; fi'
+    - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then zip -r $RELEASE_FILENAME BiliDrive; elif [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r $RELEASE_FILENAME BiliDrive; else tar czvf $RELEASE_FILENAME BiliDrive; fi'
 deploy:
     provider: releases
     api_key: $GITHUB_OAUTH_TOKEN
