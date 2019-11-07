@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v0.0.24
+        - TRAVIS_TAG=v0.0.25
 jobs:
     fast_finish: true
     include:
@@ -27,14 +27,14 @@ jobs:
             osx_image: xcode11.2
             arch: amd64
             language: shell
-            env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-macos-amd64.tar.gz
+            env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-macos-amd64.zip
         -
             name: 'Python 3.7.5 on Windows (AMD64)'
             os: windows
             arch: amd64
             language: shell
             env: ['PATH=/c/Python37:/c/Python37/Scripts:$PATH', RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-windows-amd64.zip]
-            before_install: ['choco install python --version 3.7.5', 'python -m pip install --upgrade pip', 'choco install 7zip']
+            before_install: ['choco install python --version 3.7.5', 'python -m pip install --upgrade pip']
     allow_failures:
         -
             os: linux
@@ -50,7 +50,7 @@ script:
     - 'cp dist/* release/BiliDrive/'
     - 'cp README.md release/BiliDrive/'
     - 'cd release'
-    - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then zip -r $RELEASE_FILENAME BiliDrive; elif [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r $RELEASE_FILENAME BiliDrive; else tar czvf $RELEASE_FILENAME BiliDrive; fi'
+    - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then 7z a -tzip $RELEASE_FILENAME BiliDrive; elif [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r $RELEASE_FILENAME BiliDrive; else tar czvf $RELEASE_FILENAME BiliDrive; fi'
 deploy:
     provider: releases
     api_key: $GITHUB_OAUTH_TOKEN
