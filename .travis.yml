@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v0.1.4
+        - TRAVIS_TAG=v0.1.5
 jobs:
     fast_finish: true
     include:
@@ -40,16 +40,14 @@ jobs:
             os: linux
             arch: arm64
 install:
-    - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then python -m pip install --upgrade pip; else pip3 install --upgrade pip; fi'
+    - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then python -m pip install -U pip; else pip3 install -U pip; fi'
     - 'pip3 install -r requirements.txt'
     - 'pip3 install pyinstaller'
 script:
     - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then python drive.py -h; else python3 drive.py -h; fi'
     - 'pyinstaller -F -n BiliDrive -i icon.ico drive.py'
     - 'mkdir -p release/BiliDrive'
-    - 'cp dist/* release/BiliDrive/'
-    - 'cp LICENSE release/BiliDrive/'
-    - 'cp README.md release/BiliDrive/'
+    - 'cp {dist/*,LICENSE,README.md} release/BiliDrive'
     - 'cd release'
     - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then 7z a -tzip $RELEASE_FILENAME BiliDrive; elif [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r $RELEASE_FILENAME BiliDrive; else tar -czvf $RELEASE_FILENAME BiliDrive; fi'
 deploy:
