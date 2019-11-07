@@ -1,6 +1,6 @@
 env:
   global:
-    - TRAVIS_TAG=v0.0.9
+    - TRAVIS_TAG=v0.0.10
 if: tag IS blank
 jobs:
   include:
@@ -20,7 +20,7 @@ jobs:
       before_deploy:
         - cd release
         - tar czvf $RELEASE_FILENAME BiliDrive
-      sudo: required
+      rvm: 2.3.0
 
     - name: "Python 3.7 on macOS (AMD64)"
       env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-macos-amd64.tar.gz
