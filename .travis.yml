@@ -1,11 +1,11 @@
 env:
   global:
-    - TAG_NAME=v0.0.3
+    - TAG_NAME=v0.0.4
 if: tag IS blank
 sudo: required
 jobs:
   include:
-    - name: "Python 3.7 on Linux"
+    - name: "Python 3.7 on Linux (AMD64)"
       env: RELEASE_FILENAME=bilidrive-$TAG_NAME-linux-amd64.tar.gz
       language: python
       python: 3.7
@@ -13,7 +13,7 @@ jobs:
         - cd release
         - tar czvf $RELEASE_FILENAME BiliDrive
 
-    - name: "Python 3.7 on Linux (ARM)"
+    - name: "Python 3.7 on Linux (ARM64)"
       arch: arm64
       env: RELEASE_FILENAME=bilidrive-$TAG_NAME-linux-arm64.tar.gz
       language: python
@@ -22,7 +22,7 @@ jobs:
         - cd release
         - tar czvf $RELEASE_FILENAME BiliDrive
 
-    - name: "Python 3.7 on macOS"
+    - name: "Python 3.7 on macOS (AMD64)"
       env: RELEASE_FILENAME=bilidrive-$TAG_NAME-macos-amd64.tar.gz
       language: shell
       os: osx
@@ -31,7 +31,7 @@ jobs:
         - cd release
         - tar czvf $RELEASE_FILENAME BiliDrive
 
-    - name: "Python 3.7 on Windows"
+    - name: "Python 3.7 on Windows (AMD64)"
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - RELEASE_FILENAME=bilidrive-$TAG_NAME-windows-amd64.zip
@@ -39,8 +39,8 @@ jobs:
       os: windows
       before_install:
         - choco install python --version 3.7
-        - choco install 7zip
         - python -m pip install --upgrade pip
+        - choco install 7zip
       before_deploy:
         - cd release
         - 7z a -tzip $RELEASE_FILENAME BiliDrive
@@ -61,4 +61,4 @@ deploy:
   draft: true
   overwrite: true
   skip_cleanup: true
-  tag_name: $TAG_NAME
+  # tag_name: $TAG_NAME
