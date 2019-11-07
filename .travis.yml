@@ -1,26 +1,27 @@
+if: tag IS blank
 env:
  global:
- - TAG_NAME=v1.3
+ - TAG_NAME=v1.4
 language: python            # this works for Linux but is an error on macOS or Windows
 jobs:
   include:
     - name: "Python 3.7 on Linux"
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
       env: RELEASE_FILENAME=testrepo-$TAG_NAME-linux-amd64.tar.gz
-      after_success:
+      before_deploy:
         - tar czvf $RELEASE_FILENAME ./dist/TESTDIR
     - name: "Python 3.7 on Linux (ARM)"
       arch: arm64
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
       env: RELEASE_FILENAME=testrepo-$TAG_NAME-linux-arm64.tar.gz
-      after_success:
+      before_deploy:
         - tar czvf $RELEASE_FILENAME ./dist/TESTDIR
     - name: "Python 3.7 on macOS"
       os: osx
       osx_image: xcode11.2  # Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
       env: RELEASE_FILENAME=testrepo-$TAG_NAME-macos-amd64.zip
-      after_success:
+      before_deploy:
         - tar czvf $RELEASE_FILENAME ./dist/TESTDIR
     - name: "Python 3.7 on Windows"
       os: windows           # Windows 10.0.17134 N/A Build 17134
@@ -32,32 +33,24 @@ jobs:
         - choco install python --version 3.7
         - choco install 7zip
         - python -m pip install --upgrade pip
-      after_success:
+      before_deploy:
         - 7z a -tzip $RELEASE_FILENAME ./dist/TESTDIR
 install:
   - pip3 install --upgrade pip  # all three OSes agree about 'pip3'
   - pip3 install -r requirements.txt
   - pip3 install pyinstaller
-  - echo $TRAVIS_OS_NAME
 # 'python' points to Python 2.7 on macOS but points to Python 3.8 on Linux and Windows
 # 'python3' is a 'command not found' error on Windows but 'py' works on Windows only
 script:
   - python3 entry.py || python entry.py
   - pyinstaller -F entry.py
+after_success:
   - mkdir ./dist/TESTDIR
   - cp ./dist/entry* ./dist/TESTDIR
-before_deploy:
-  # Set up git user name and tag this commit
-  #- git config --local user.name "UUUU"
-  #- git config --local user.email "PPPP"
-  - git tag $TAG_NAME
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
   file: $RELEASE_FILENAME
   skip_cleanup: true
   overwrite: true
-  on:
-    tags: true
-  # tag_name: $TAG_NAME
-  
+  tag_name: $TAG_NAME
