@@ -1,42 +1,42 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v0.0.21
+        - TRAVIS_TAG=v0.0.22
 jobs:
     include:
         -
-            name: 'Python 3.7 on Linux (AMD64)'
+            name: 'Python 3.7.5 on Linux (AMD64)'
             os: linux
             dist: bionic
             arch: amd64
             language: python
-            python: 3.7
+            python: 3.7.5
             env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-amd64.tar.gz
             before_deploy: ['cd release', 'tar czvf $RELEASE_FILENAME BiliDrive']
         -
-            name: 'Python 3.7 on Linux (ARM64)'
+            name: 'Python 3.7.5 on Linux (ARM64)'
             os: linux
             dist: bionic
             arch: arm64
             language: python
-            python: 3.7
+            python: 3.7.5
             env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-arm64.tar.gz
             before_deploy: ['cd release', 'tar czvf $RELEASE_FILENAME BiliDrive']
         -
-            name: 'Python 3.7 on macOS (AMD64)'
+            name: 'Python 3.7.4 on macOS (AMD64)'
             os: osx
             osx_image: xcode11.2
             arch: amd64
             language: shell
             env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-macos-amd64.tar.gz
-            before_deploy: ['cd release', 'tar czvf $RELEASE_FILENAME BiliDrive']
+            before_deploy: ['cd release', 'zip -r $RELEASE_FILENAME BiliDrive']
         -
-            name: 'Python 3.7 on Windows (AMD64)'
+            name: 'Python 3.7.5 on Windows (AMD64)'
             os: windows
             arch: amd64
             language: shell
             env: ['PATH=/c/Python37:/c/Python37/Scripts:$PATH', RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-windows-amd64.zip]
-            before_install: ['choco install python --version 3.7', 'python -m pip install --upgrade pip', 'choco install 7zip']
+            before_install: ['choco install python --version 3.7.5', 'python -m pip install --upgrade pip', 'choco install 7zip']
             before_deploy: ['cd release', '7z a -tzip $RELEASE_FILENAME BiliDrive']
     allow_failures:
         -
