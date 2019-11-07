@@ -1,8 +1,7 @@
 env:
   global:
-    - TRAVIS_TAG=v0.0.7
+    - TRAVIS_TAG=v0.0.8
 if: tag IS blank
-#sudo: required
 jobs:
   include:
     - name: "Python 3.7 on Linux (AMD64)"
@@ -22,7 +21,7 @@ jobs:
         - cd release
         - tar czvf $RELEASE_FILENAME BiliDrive
       before_install:
-        - rvm install 2.3.0
+        - gem update --system 2.3.0
 
     - name: "Python 3.7 on macOS (AMD64)"
       env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-macos-amd64.tar.gz
