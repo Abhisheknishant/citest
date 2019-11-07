@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v0.0.22
+        - TRAVIS_TAG=v0.0.23
 jobs:
     include:
         -
@@ -35,7 +35,7 @@ jobs:
             os: windows
             arch: amd64
             language: shell
-            env: ['PATH=/c/Python37:/c/Python37/Scripts:$PATH', RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-windows-amd64.zip]
+            env: [RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-windows-amd64.zip]
             before_install: ['choco install python --version 3.7.5', 'python -m pip install --upgrade pip', 'choco install 7zip']
             before_deploy: ['cd release', '7z a -tzip $RELEASE_FILENAME BiliDrive']
     allow_failures:
