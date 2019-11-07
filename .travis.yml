@@ -1,6 +1,7 @@
 env:
   global:
-    - TAG_NAME=v0.0.4
+    - TAG_NAME=v0.0.5
+    - TRAVIS_TAG=v0.0.5
 if: tag IS blank
 sudo: required
 jobs:
@@ -59,6 +60,7 @@ deploy:
   api_key: $GITHUB_OAUTH_TOKEN
   file: $RELEASE_FILENAME
   draft: true
+  # prerelease: true
   overwrite: true
   skip_cleanup: true
-  # tag_name: $TAG_NAME
+  # name: $TAG_NAME
