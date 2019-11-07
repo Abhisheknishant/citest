@@ -6,7 +6,6 @@ if: tag IS blank
 jobs:
   include:
     - name: "Python 3.7 on Linux (AMD64)"
-    dist: xenial
       env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-amd64.tar.gz
       language: python
       python: 3.7
