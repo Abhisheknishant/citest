@@ -1,13 +1,12 @@
 env:
   global:
-    - TAG_NAME=v0.0.5
-    - TRAVIS_TAG=v0.0.5
+    - TRAVIS_TAG=v0.0.6
 if: tag IS blank
-sudo: required
+#sudo: required
 jobs:
   include:
     - name: "Python 3.7 on Linux (AMD64)"
-      env: RELEASE_FILENAME=bilidrive-$TAG_NAME-linux-amd64.tar.gz
+      env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-amd64.tar.gz
       language: python
       python: 3.7
       before_deploy:
@@ -16,7 +15,7 @@ jobs:
 
     - name: "Python 3.7 on Linux (ARM64)"
       arch: arm64
-      env: RELEASE_FILENAME=bilidrive-$TAG_NAME-linux-arm64.tar.gz
+      env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-arm64.tar.gz
       language: python
       python: 3.7
       before_deploy:
@@ -24,7 +23,7 @@ jobs:
         - tar czvf $RELEASE_FILENAME BiliDrive
 
     - name: "Python 3.7 on macOS (AMD64)"
-      env: RELEASE_FILENAME=bilidrive-$TAG_NAME-macos-amd64.tar.gz
+      env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-macos-amd64.tar.gz
       language: shell
       os: osx
       osx_image: xcode11.2
@@ -35,7 +34,7 @@ jobs:
     - name: "Python 3.7 on Windows (AMD64)"
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
-        - RELEASE_FILENAME=bilidrive-$TAG_NAME-windows-amd64.zip
+        - RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-windows-amd64.zip
       language: shell
       os: windows
       before_install:
@@ -59,8 +58,5 @@ deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
   file: $RELEASE_FILENAME
-  draft: true
-  # prerelease: true
   overwrite: true
   skip_cleanup: true
-  # name: $TAG_NAME
