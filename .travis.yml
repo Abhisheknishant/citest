@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v0.1.9
+        - TRAVIS_TAG=v0.1.99
 jobs:
     fast_finish: true
     include:
@@ -34,11 +34,7 @@ jobs:
             arch: arm64
             language: python
             python: 3.7.5
-            env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-arm64.tar.gz
-    allow_failures:
-        -
-            os: linux
-            arch: arm64
+            env: ['PATH=~/.ruby/bin:$PATH', GEM_HOME=~/.ruby, RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-arm64.tar.gz]
 install:
     - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then python -m pip install -U pip; else pip3 install -U pip; fi'
     - 'pip3 install -r requirements.txt'
