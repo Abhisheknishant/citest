@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v0.1.5
+        - TRAVIS_TAG=v0.1.6
 jobs:
     fast_finish: true
     include:
@@ -13,14 +13,6 @@ jobs:
             language: python
             python: 3.7.5
             env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-amd64.tar.gz
-        -
-            name: 'Python 3.7.5 on Linux (ARM64)'
-            os: linux
-            dist: bionic
-            arch: arm64
-            language: python
-            python: 3.7.5
-            env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-arm64.tar.gz
         -
             name: 'Python 3.7.4 on macOS (AMD64)'
             os: osx
@@ -35,6 +27,16 @@ jobs:
             language: shell
             env: ['PATH=/c/Python37:/c/Python37/Scripts:$PATH', RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-windows-amd64.zip]
             before_install: 'choco install python --version 3.7.5'
+        -
+            name: 'Python 3.7.5 on Linux (ARM64)'
+            os: linux
+            dist: bionic
+            arch: arm64
+            language: python
+            python: 3.7.5
+            env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-arm64.tar.gz
+            sudo: required
+            before_install: 'sudo ruby -S gem install dpl'
     allow_failures:
         -
             os: linux
