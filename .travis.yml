@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v0.1.99
+        - TRAVIS_TAG=v0.99.99
 jobs:
     fast_finish: true
     include:
@@ -13,6 +13,14 @@ jobs:
             language: python
             python: 3.7.5
             env: RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-amd64.tar.gz
+        -
+            name: 'Python 3.7.5 on Linux (ARM64)'
+            os: linux
+            dist: bionic
+            arch: arm64
+            language: python
+            python: 3.7.5
+            env: ['PATH=~/.ruby/bin:$PATH', GEM_HOME=~/.ruby, RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-arm64.tar.gz]
         -
             name: 'Python 3.7.4 on macOS (AMD64)'
             os: osx
@@ -27,14 +35,6 @@ jobs:
             language: shell
             env: ['PATH=/c/Python37:/c/Python37/Scripts:$PATH', RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-windows-amd64.zip]
             before_install: 'choco install python --version 3.7.5'
-        -
-            name: 'Python 3.7.5 on Linux (ARM64)'
-            os: linux
-            dist: bionic
-            arch: arm64
-            language: python
-            python: 3.7.5
-            env: ['PATH=~/.ruby/bin:$PATH', GEM_HOME=~/.ruby, RELEASE_FILENAME=bilidrive-$TRAVIS_TAG-linux-arm64.tar.gz]
 install:
     - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then python -m pip install -U pip; else pip3 install -U pip; fi'
     - 'pip3 install -r requirements.txt'
