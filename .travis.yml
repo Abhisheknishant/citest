@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v2.001
+        - TRAVIS_TAG=v2.002
 jobs:
     include:
         -
@@ -55,7 +55,8 @@ deploy:
         skip_cleanup: true
     -
         provider: pypi
-        user: "__token__"
+        user: '__token__'
         password: $PYPI_API_TOKEN
-        server: "https://test.pypi.org/legacy/"
-        distributions: "sdist bdist_wheel"
+        skip_existing: true
+        on:
+            condition: $TRAVIS_OS_NAME = linux
