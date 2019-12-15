@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v1.999
+        - TRAVIS_TAG=v2.001
 jobs:
     include:
         -
@@ -45,11 +45,12 @@ script:
     - 'cp {dist/*,LICENSE,README.md} release/RYProj'
     - 'cd release'
     - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then 7z a -tzip $RELEASE_FILENAME RYProj; elif [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r $RELEASE_FILENAME RYProj; else tar -czvf $RELEASE_FILENAME RYProj; fi'
+    - 'cd ..'
 deploy:
     -
         provider: releases
         api_key: $GITHUB_OAUTH_TOKEN
-        file: $RELEASE_FILENAME
+        file: release/$RELEASE_FILENAME
         overwrite: true
         skip_cleanup: true
     -
