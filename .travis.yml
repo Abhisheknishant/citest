@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v2.006
+        - TRAVIS_TAG=v2.008
 jobs:
     include:
         -
@@ -60,5 +60,7 @@ deploy:
         distributions: "sdist bdist_wheel"
         skip_existing: true
         on:
-            condition: '($TRAVIS_OS_NAME = linux) AND ($TRAVIS_CPU_ARCH = amd64)'
+            condition:
+                - $TRAVIS_OS_NAME = linux
+                - $TRAVIS_CPU_ARCH = amd64
 
