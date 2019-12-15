@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v2.003
+        - TRAVIS_TAG=v2.004
 jobs:
     include:
         -
@@ -46,6 +46,8 @@ script:
     - 'cd release'
     - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then 7z a -tzip $RELEASE_FILENAME RYProj; elif [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r $RELEASE_FILENAME RYProj; else tar -czvf $RELEASE_FILENAME RYProj; fi'
     - 'cd ..'
+    - 'echo $TRAVIS_CPU_ARCH'
+    - '$TRAVIS_CPU_ARCH'
 deploy:
     -
         provider: releases
