@@ -1,7 +1,7 @@
 if: 'tag IS blank'
 env:
     global:
-        - TRAVIS_TAG=v2.008
+        - TRAVIS_TAG=v2.009
 jobs:
     include:
         -
@@ -44,7 +44,7 @@ script:
     - 'mkdir -p release/RYProj'
     - 'cp {dist/*,LICENSE,README.md} release/RYProj'
     - 'cd release'
-    - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then 7z a -tzip $RELEASE_FILENAME RYProj; elif [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r $RELEASE_FILENAME RYProj; else tar -czvf $RELEASE_FILENAME RYProj; fi'
+    - 'if [ "$TRAVIS_OS_NAME" = "windows" ]; then 7z a -tzip $RELEASE_FILENAME BiliDrive; elif [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r $RELEASE_FILENAME BiliDrive; else tar -czvf $RELEASE_FILENAME BiliDrive; fi'
     - 'cd ..'
 deploy:
     -
@@ -55,12 +55,10 @@ deploy:
         skip_cleanup: true
     -
         provider: pypi
-        user: '__token__'
+        user: __token__
         password: $PYPI_API_TOKEN
-        distributions: "sdist bdist_wheel"
+        distributions: 'sdist bdist_wheel'
         skip_existing: true
         on:
-            condition:
-                - $TRAVIS_OS_NAME = linux
-                - $TRAVIS_CPU_ARCH = amd64
+            condition: ['$TRAVIS_OS_NAME = linux', '$TRAVIS_CPU_ARCH = amd64']
 
