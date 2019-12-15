@@ -11,7 +11,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
     install_requires = fh.read().splitlines()
 
 setuptools.setup(
-    name="RYProj",
+    name="RYProj1",
     version=RYProj.__version__,
     url="https://gitdfhub.com/Hsurggy/BiliDrffive",
     author=RYProj.__author__,
